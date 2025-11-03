@@ -1,0 +1,26 @@
+{
+  "name": "task-management",
+  "version": "1.0.0",
+  "description": "web-ii Lab Works",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "scripts": {
+       "start": "node src/index.js"
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AhadSiddiki/task-management.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AhadSiddiki/task-management/issues"
+  },
+  "homepage": "https://github.com/AhadSiddiki/task-management#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
