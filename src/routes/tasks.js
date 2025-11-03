@@ -18,6 +18,12 @@ router.get('/tasks', (req, res) => {
 // GET /task/:id
 router.get('/task/:id', (req, res) => {
     const taskId = parseInt(req.params.id, 10);
+
+    // NEW: Check for invalid ID format (e.g., "abc" becomes NaN)
+    if (isNaN(taskId)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+    }
+
     const task = tasks.find(t => t.id === taskId);
 
     if (task) {
