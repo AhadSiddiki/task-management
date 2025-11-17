@@ -33,3 +33,7 @@ This is a simple RESTful API for managing tasks, built with Node.js and Express.
     * Description: Returns a single task by its ID.
     * Returns `400 Bad Request` if the ID is not a valid number.
     * Returns `404 Not Found` if the task does not exist.
+* `GET /post`
+    * Description: Creates a new task.
+    * Returns successful Task created.
+   
