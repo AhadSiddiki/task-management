@@ -17,7 +17,12 @@ app.locals.tasks = tasks;
 
 // JSON Parsing Middleware
 app.use(express.json()); 
-
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: "healthy",
+    uptime: process.uptime() // Returns server uptime in seconds
+  });
+});
 // Mount Router
 app.use('/tasks', taskRouter);
 
