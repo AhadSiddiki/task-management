@@ -1,36 +1,49 @@
 const express = require('express');
 const router = express.Router();
 
-// (moved from index.js)
-const tasks = [
-    { id: 1, title: 'Learn Node.js', completed: false, priority: 'high', createdAt: new Date() },
-    { id: 2, title: 'Build REST API', completed: false, priority: 'medium', createdAt: new Date() },
-    { id: 3, title: 'Test with Postman', completed: false, priority: 'low', createdAt: new Date() },
-    { id: 4, title: 'Refactor routes', completed: false, priority: 'medium', createdAt: new Date() },
-    { id: 5, title: 'Add error handling', completed: false, priority: 'high', createdAt: new Date() }
-];
-
-// GET /tasks
-router.get('/tasks', (req, res) => {
-    res.json(tasks);
+// GET /tasks - Retrieve all tasks
+router.get('/', (req, res) => {
+  const tasks = req.app.locals.tasks;
+  
+  res.status(200).json({
+    success: true,
+    data: tasks
+  });
 });
 
-// GET /task/:id
-router.get('/task/:id', (req, res) => {
-    const taskId = parseInt(req.params.id, 10);
+// POST /tasks - Create a new task
+router.post('/', (req, res) => {
+  try {
+    const { title } = req.body;
 
-    // NEW: Check for invalid ID format (e.g., "abc" becomes NaN)
-    if (isNaN(taskId)) {
-        return res.status(400).json({ error: "Invalid ID format" });
+    if (!title || typeof title !== 'string' || title.trim().length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Title is required and must be a non-empty string'
+      });
     }
 
-    const task = tasks.find(t => t.id === taskId);
+    const newTask = {
+      id: Date.now(), 
+      title: title.trim(),
+      completed: false
+    };
 
-    if (task) {
-        res.json(task);
-    } else {
-        res.status(404).json({ error: "Task not found" });
-    }
+    const tasks = req.app.locals.tasks;
+    tasks.push(newTask);
+
+    res.status(201).json({
+      success: true,
+      data: newTask
+    });
+    
+  } catch (error) {
+    console.error(error); 
+    res.status(500).json({
+      success: false,
+      error: 'Internal server error'
+    });
+  }
 });
 
 module.exports = router;

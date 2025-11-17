@@ -1,23 +1,23 @@
 const express = require('express');
+const taskRouter = require('./routes/tasks');
+
 const app = express();
-const port = 3000;
+const port = 3000; 
 
-// Import the task routes
-const taskRoutes = require('./routes/tasks');
+// In-memory storage
+const tasks = [
+  { id: 1, title: 'Sample Task', completed: false }
+];
 
-app.get('/', (req, res) => {
-    res.send('Task Management API is running!');
-});
+app.locals.tasks = tasks; 
 
-app.get('/health', (req, res) => {
-    res.json({
-        status: "healthy",
-        uptime: process.uptime()
-    });
-});
+// JSON Parsing Middleware
+app.use(express.json()); 
 
-app.use('/', taskRoutes); 
+// Mount Router
+app.use('/tasks', taskRouter);
+
 
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+  console.log(`Server running on http://localhost:${port}`);
 });
