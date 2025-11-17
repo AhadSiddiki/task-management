@@ -54,14 +54,21 @@ router.post('/', (req, res) => {
   }
 });
 
-router.get('/task/:id', (req, res) => { 
-  const taskId = parseInt(req.params.id, 10); 
-  const task = tasks.find(t => t.id === taskId); 
-  if (task) { 
-    res.json(task); 
-  } else { 
-    res.status(404).json({ error: "Task not found" }); 
-  }
+router.get('/task/:id', (req, res) => {
+    const taskId = parseInt(req.params.id, 10);
+
+    // NEW: Check for invalid ID format (e.g., "abc" becomes NaN)
+    if (isNaN(taskId)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+    }
+
+    const task = tasks.find(t => t.id === taskId);
+
+    if (task) {
+        res.json(task);
+    } else {
+        res.status(404).json({ error: "Task not found" });
+    }
 });
 
 module.exports = router;
